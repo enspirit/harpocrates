@@ -51,7 +51,10 @@ class Client {
         this.#socket.emit('privateMessage', {
           recipient,
           message: encrypted
-        }, () => {
+        }, (res) => {
+          if (res.err) {
+            return reject(new Error(res.err));
+          }
           resolve();
         });
       });

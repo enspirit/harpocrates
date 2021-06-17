@@ -61,7 +61,7 @@ module.exports = (port = 3000) => {
       const roomMembers = io.sockets.adapter.rooms.get(msg.recipient);
       if (!roomMembers) {
         console.error(msg.recipient, 'is not home');
-        return reply('no-one-home');
+        return reply({ err: 'no-one-home' });
       }
       io.sockets.in(msg.recipient).emit('message', {
         from: socket.username,
