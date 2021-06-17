@@ -19,7 +19,7 @@ $ npm install -g @enspirit/harpocrates
 $ harpocrates COMMAND
 running command...
 $ harpocrates (-v|--version|version)
-@enspirit/harpocrates/0.0.2 linux-x64 node-v12.18.0
+@enspirit/harpocrates/0.0.3 linux-x64 node-v12.18.0
 $ harpocrates --help [COMMAND]
 USAGE
   $ harpocrates COMMAND
@@ -63,7 +63,7 @@ DESCRIPTION
   This command connects to the harpocrates hub and waits for incoming messages from users
 ```
 
-_See code: [src/commands/receive.js](https://github.com/enspirit/harpocrates/blob/v0.0.2/src/commands/receive.js)_
+_See code: [src/commands/receive.js](https://github.com/enspirit/harpocrates/blob/v0.0.3/src/commands/receive.js)_
 
 ## `harpocrates send TO`
 
@@ -82,7 +82,7 @@ DESCRIPTION
   that needs to be shared
 ```
 
-_See code: [src/commands/send.js](https://github.com/enspirit/harpocrates/blob/v0.0.2/src/commands/send.js)_
+_See code: [src/commands/send.js](https://github.com/enspirit/harpocrates/blob/v0.0.3/src/commands/send.js)_
 
 ## `harpocrates server`
 
@@ -100,7 +100,7 @@ DESCRIPTION
   This command starts a harpocrates server used as a hub for users to communicate with each other
 ```
 
-_See code: [src/commands/server.js](https://github.com/enspirit/harpocrates/blob/v0.0.2/src/commands/server.js)_
+_See code: [src/commands/server.js](https://github.com/enspirit/harpocrates/blob/v0.0.3/src/commands/server.js)_
 
 ## `harpocrates setup`
 
@@ -120,5 +120,5 @@ DESCRIPTION
   This command initializes harpocrates, creating a new rsa pair for encryption of passwords
 ```
 
-_See code: [src/commands/setup.js](https://github.com/enspirit/harpocrates/blob/v0.0.2/src/commands/setup.js)_
+_See code: [src/commands/setup.js](https://github.com/enspirit/harpocrates/blob/v0.0.3/src/commands/setup.js)_
 <!-- commandsstop -->
