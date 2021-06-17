@@ -58,7 +58,11 @@ module.exports = (port = 3000) => {
         console.error(msg.recipient, 'is an unknown recipient');
         return reply('unknown-recipient');
       }
-      console.log('forwarding private message to', msg.recipient);
+      const roomMembers = io.sockets.adapter.rooms.get(msg.recipient);
+      if (!roomMembers) {
+        console.error(msg.recipient, 'is not home');
+        return reply('no-one-home');
+      }
       io.sockets.in(msg.recipient).emit('message', {
         from: socket.username,
         message: msg.message
