@@ -25,7 +25,7 @@ pipeline {
       steps {
         container('builder') {
           script {
-            sh 'make images'
+            sh 'make image'
           }
         }
       }
@@ -42,7 +42,7 @@ pipeline {
         container('builder') {
           script {
             docker.withRegistry('', 'dockerhub-credentials') {
-              sh 'make push-images'
+              sh 'make push-image'
             }
           }
         }
