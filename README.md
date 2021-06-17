@@ -28,26 +28,10 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`harpocrates hello`](#harpocrates-hello)
 * [`harpocrates help [COMMAND]`](#harpocrates-help-command)
-
-## `harpocrates hello`
-
-Describe the command here
-
-```
-USAGE
-  $ harpocrates hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/enspirit/harpocrates/blob/v0.0.1/src/commands/hello.js)_
+* [`harpocrates send TO`](#harpocrates-send-to)
+* [`harpocrates server`](#harpocrates-server)
+* [`harpocrates setup`](#harpocrates-setup)
 
 ## `harpocrates help [COMMAND]`
 
@@ -65,4 +49,60 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
+
+## `harpocrates send TO`
+
+Send a password to another user
+
+```
+USAGE
+  $ harpocrates send TO
+
+ARGUMENTS
+  TO  the recipient of your message
+
+DESCRIPTION
+  ...
+  This command connects to the harpocrates hub, waits for the user to connect and then prompts the user for the password 
+  that needs to be shared
+```
+
+_See code: [src/commands/send.js](https://github.com/enspirit/harpocrates/blob/v0.0.1/src/commands/send.js)_
+
+## `harpocrates server`
+
+Starts a harprocrates server
+
+```
+USAGE
+  $ harpocrates server
+
+OPTIONS
+  -p, --port=port  [default: 3000] port to use for the server
+
+DESCRIPTION
+  ...
+  This command starts a harpocrates server used as a hub for users to communicate with each other
+```
+
+_See code: [src/commands/server.js](https://github.com/enspirit/harpocrates/blob/v0.0.1/src/commands/server.js)_
+
+## `harpocrates setup`
+
+Sets up harprocrates
+
+```
+USAGE
+  $ harpocrates setup
+
+OPTIONS
+  -f, --force              forces the setup
+  -u, --username=username  (required) your username
+
+DESCRIPTION
+  ...
+  This command initializes harpocrates, creating a new rsa pair for encryption of passwords
+```
+
+_See code: [src/commands/setup.js](https://github.com/enspirit/harpocrates/blob/v0.0.1/src/commands/setup.js)_
 <!-- commandsstop -->
