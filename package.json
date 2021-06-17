@@ -5,6 +5,9 @@
   "bin": {
     "harpocrates": "./bin/run"
   },
+  "files": [
+    "/src"
+  ],
   "bugs": "https://github.com/enspirit/harpocrates/issues",
   "dependencies": {
     "@oclif/command": "^1.8.0",
@@ -16,6 +19,7 @@
     "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
+    "pkg": "^4.4.9",
     "@enspirit/eslint-config-node": "^0.0.9",
     "@oclif/dev-cli": "^1.26.0",
     "@oclif/test": "^1.2.8",
@@ -54,6 +58,13 @@
     "posttest": "eslint .",
     "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "package": "pkg . --targets linux,macos,win,alpine --out-path pkg/"
+  },
+  "pkg": {
+    "scripts": [
+      "bin/**/*.js",
+      "src/**/*.js"
+    ]
   }
 }
