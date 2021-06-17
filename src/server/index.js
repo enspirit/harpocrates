@@ -5,11 +5,12 @@ const { Server } = require('socket.io');
 const { HANDSHAKE } = require('../core/constants');
 const path = require('path');
 const keys = require('../core/keys');
-const userdb = require('./userdb');
+const loadUserDB = require('./userdb');
 
 module.exports = (port = 3000) => {
   const server = http.createServer(app);
   const io = new Server(server);
+  const userdb = loadUserDB();
 
   app.get('/', (req, res) => {
     res.send({
