@@ -10,10 +10,13 @@ class Client {
   constructor(config, socket) {
     this.#config = config;
     this.#socket = socket;
+  }
 
+  waitForMessages() {
+    this.#socket.emit('listen');
     this.#socket.on('message', (data) => {
       console.log('receiving private message from', data.from);
-      const message = keys.decrypt(data.message, config.privateKey);
+      const message = keys.decrypt(data.message, this.#config.privateKey);
       console.log('->', message);
     });
   }
@@ -34,18 +37,23 @@ class Client {
 
   sendTo(recipient, content) {
     console.log('Ringing', recipient);
-    this.#socket.emit('ring', {
-      recipient
-    }, ({ publicKey }) => {
-      if (!publicKey) {
-        throw new Error('Unable to retrieve recipient\'s public key');
-      }
-      const key = keys.factorPublic(publicKey);
-      const encrypted = keys.encrypt(content, key);
-      console.log('Got recipient public key, sending encrypted message');
-      this.#socket.emit('privateMessage', {
-        recipient,
-        message: encrypted
+    return new Promise((resolve, reject) => {
+      this.#socket.emit('ring', {
+        recipient
+      }, ({ publicKey }) => {
+        if (!publicKey) {
+          reject(new Error('Unable to retrieve recipient\'s public key'));
+        }
+        console.log('Got recipient public key, encrypting message');
+        const key = keys.factorPublic(publicKey);
+        const encrypted = keys.encrypt(content, key);
+        console.log('Sending encrypted message to recipient...');
+        this.#socket.emit('privateMessage', {
+          recipient,
+          message: encrypted
+        }, () => {
+          resolve();
+        });
       });
     });
   }

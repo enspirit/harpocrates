@@ -11,8 +11,8 @@ class SendCommand extends Command {
     await client.authenticate();
 
     const data = await cli.prompt('Please introduce the content you want to share');
-    client.sendTo(args.to, data);
-    // client.disconnect();
+    await client.sendTo(args.to, data);
+    client.disconnect();
   }
 }
 

@@ -35,9 +35,12 @@ module.exports = (port = 3000) => {
         return reply('invalid-handshake');
       }
       socket.username = msg.username;
-      console.log(msg.username, 'joining their own room');
-      socket.join(msg.username);
       reply('ok');
+    });
+
+    socket.on('listen', () => {
+      console.log(socket.username, 'joining their own room');
+      socket.join(socket.username);
     });
 
     socket.on('ring', (msg, reply) => {
@@ -52,12 +55,15 @@ module.exports = (port = 3000) => {
     socket.on('privateMessage', (msg, reply) => {
       console.log(socket.username, 'wants to send data to', msg.recipient);
       if (!userdb[msg.recipient]) {
+        console.error(msg.recipient, 'is an unknown recipient');
         return reply('unknown-recipient');
       }
+      console.log('forwarding private message to', msg.recipient);
       io.sockets.in(msg.recipient).emit('message', {
         from: socket.username,
         message: msg.message
       });
+      reply('ok');
     });
   });
 
