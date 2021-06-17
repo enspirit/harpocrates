@@ -40,9 +40,9 @@ class Client {
     return new Promise((resolve, reject) => {
       this.#socket.emit('ring', {
         recipient
-      }, ({ publicKey }) => {
-        if (!publicKey) {
-          reject(new Error('Unable to retrieve recipient\'s public key'));
+      }, ({ err, publicKey }) => {
+        if (err) {
+          return reject(new Error(err));
         }
         console.log('Got recipient public key, encrypting message');
         const key = keys.factorPublic(publicKey);

@@ -47,7 +47,7 @@ module.exports = (port = 3000) => {
       console.log(socket.username, 'wants to contact', msg.recipient);
       const recipientPublicKey = userdb[msg.recipient];
       if (!recipientPublicKey) {
-        return reply('unknown-recipient');
+        return reply({ err: 'unknown-recipient' });
       }
       reply({ publicKey: keys.export(recipientPublicKey) });
     });
