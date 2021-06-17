@@ -16,10 +16,4 @@ ReceiveCommand.description = `Connect to the hub and wait for messages...
 This command connects to the harpocrates hub and waits for incoming messages from users
 `;
 
-ReceiveCommand.args = [{
-}];
-
-ReceiveCommand.flags = {
-};
-
 module.exports = ReceiveCommand;
