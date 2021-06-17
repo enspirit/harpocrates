@@ -1,5 +1,5 @@
 {
-  "name": "harpocrates",
+  "name": "@enspirit/harpocrates",
   "version": "0.0.1",
   "author": "Louis Lambeau @llambeau",
   "bin": {

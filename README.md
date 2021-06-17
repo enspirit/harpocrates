@@ -15,11 +15,11 @@ harpocrates
 # Usage
 <!-- usage -->
 ```sh-session
-$ npm install -g harpocrates
+$ npm install -g @enspirit/harpocrates
 $ harpocrates COMMAND
 running command...
 $ harpocrates (-v|--version|version)
-harpocrates/0.0.1 darwin-x64 node-v12.18.4
+@enspirit/harpocrates/0.0.1 linux-x64 node-v12.18.0
 $ harpocrates --help [COMMAND]
 USAGE
   $ harpocrates COMMAND
@@ -97,6 +97,7 @@ USAGE
 
 OPTIONS
   -f, --force              forces the setup
+  -h, --hub=hub            (required) the address of the harpocates hub
   -u, --username=username  (required) your username
 
 DESCRIPTION
