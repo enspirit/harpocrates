@@ -37,6 +37,9 @@ class Client {
     this.#socket.emit('ring', {
       recipient
     }, ({ publicKey }) => {
+      if (!publicKey) {
+        throw new Error('Unable to retrieve recipient\'s public key');
+      }
       const key = keys.factorPublic(publicKey);
       const encrypted = keys.encrypt(content, key);
       console.log('Got recipient public key, sending encrypted message');
