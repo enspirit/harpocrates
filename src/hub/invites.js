@@ -33,7 +33,7 @@ module.exports = {
 
   checkInvite(token) {
     const invite = pendingInvites.find(i => i.token === token);
-    if (invite.expire <= Date.now()) {
+    if (invite && invite.expire <= Date.now()) {
       this.removeInvite(token);
       return;
     }

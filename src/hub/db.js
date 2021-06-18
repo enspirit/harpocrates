@@ -23,8 +23,32 @@ module.exports = () => {
     return keys.factorPublic(user.publicKey);
   };
 
+  const createUser = async ({ username, publicKey }) => {
+    console.log('creating with', username, publicKey);
+    if (!username) {
+      throw new Error('Invalid username');
+    }
+    if (!publicKey) {
+      throw new Error('Invalid public key');
+    }
+    try {
+      keys.factorPublic(publicKey);
+    } catch {
+      throw new Error('Invalid public key');
+    }
+    const user = await getUser(username);
+    if (user) {
+      throw new Error('Username already exists');
+    }
+    return knex('users').insert({
+      username,
+      publicKey
+    });
+  };
+
   return {
     getUser,
-    getUserPublicKey
+    getUserPublicKey,
+    createUser
   };
 };

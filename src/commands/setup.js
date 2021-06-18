@@ -23,7 +23,12 @@ This command initializes harpocrates, creating a new rsa pair for authentication
 `;
 
 SetupCommand.flags = {
-  username: flags.string({ char: 'u', description: 'your username', required: true }),
+  username: flags.string({
+    char: 'u',
+    description: 'your username',
+    required: true,
+    default: process.env.USER
+  }),
   hub: flags.string({ char: 'h', description: 'the address of the harpocates hub', required: true }),
   force: flags.boolean({ char: 'f', default: false, description: 'forces the setup' })
 };

@@ -94,6 +94,25 @@ module.exports = (port = 3000) => {
       const invite = await invites.createInvite();
       reply({ invite });
     });
+
+    socket.on('joinHub', async ({ username, token, publicKey }, reply) => {
+      if (socket.authenticated) {
+        reply({ err: 'already-joined' });
+        return socket.disconnect();
+      }
+      if (!invites.checkInvite(token)) {
+        reply({ err: 'invalid-token' });
+        return socket.disconnect();
+      }
+      try {
+        await db.createUser({ username, publicKey });
+        invites.removeInvite(token);
+      } catch (err) {
+        reply({ err: err.message });
+        return socket.disconnect();
+      }
+      reply('ok');
+    });
   });
 
   server.listen(port, () => {

@@ -1,5 +1,4 @@
 const { Command } = require('@oclif/command');
-const cli = require('cli-ux').default;
 const createClient = require('../client');
 const { load: loadConfig } = require('../core/config');
 

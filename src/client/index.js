@@ -77,6 +77,22 @@ class Client {
       });
     });
   }
+
+  joinHub({ username, token }) {
+    console.log('Trying to join hub with invitation...');
+    return new Promise((resolve, reject) => {
+      this.#socket.emit('joinHub', {
+        username,
+        token,
+        publicKey: keys.export(this.#config.publicKey)
+      }, ({ err }) => {
+        if (err) {
+          return reject(new Error(err));
+        }
+        resolve();
+      });
+    });
+  }
 }
 
 module.exports = (config) => {
