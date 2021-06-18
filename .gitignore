@@ -7,4 +7,5 @@ Dockerfile.*
 /yarn.lock
 node_modules
 users.json
+users.sqlite
 pkg/

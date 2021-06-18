@@ -6,6 +6,9 @@
     "harpocrates": "./bin/run"
   },
   "files": [
+    "/bin",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json",
     "/src"
   ],
   "bugs": "https://github.com/enspirit/harpocrates/issues",
@@ -15,8 +18,10 @@
     "@oclif/plugin-help": "^3.2.2",
     "cli-ux": "^5.5.1",
     "express": "^4.17.1",
+    "knex": "^0.95.6",
     "socket.io": "^4.1.2",
-    "socket.io-client": "^4.1.2"
+    "socket.io-client": "^4.1.2",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "pkg": "^4.4.9",
@@ -33,12 +38,6 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "files": [
-    "/bin",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json",
-    "/src"
-  ],
   "homepage": "https://github.com/enspirit/harpocrates",
   "keywords": [
     "oclif"
