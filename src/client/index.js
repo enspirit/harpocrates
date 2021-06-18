@@ -93,6 +93,17 @@ class Client {
       });
     });
   }
+
+  listUsers() {
+    return new Promise((resolve, reject) => {
+      this.#socket.emit('listUsers', {}, ({ err, users }) => {
+        if (err) {
+          return reject(new Error(err));
+        }
+        resolve(users);
+      });
+    });
+  }
 }
 
 module.exports = (config) => {

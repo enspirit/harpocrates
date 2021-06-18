@@ -121,6 +121,31 @@ module.exports = async (port = 3000) => {
       }
       reply('ok');
     });
+
+    socket.on('listUsers', async (_, reply) => {
+      const users = await db.listUsers();
+
+      // List of our users
+      const list = users.reduce((list, user) => {
+        list[user.username] = { username: user.username };
+        return list;
+      }, {});
+
+      // Decorate list with connected/listening statuses
+      io.sockets.sockets.forEach((socket) => {
+        if (!socket.username || !list[socket.username]) {
+          return;
+        }
+        list[socket.username].connected = true;
+        if (io.sockets.adapter.rooms.has(socket.username)) {
+          list[socket.username].receiving = true;
+        }
+      });
+
+      // Back to array
+      reply({ users: Object.values(list) });
+
+    });
   });
 
   server.listen(port, () => {

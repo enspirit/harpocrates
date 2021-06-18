@@ -15,6 +15,11 @@ module.exports = () => {
     return user;
   };
 
+  const listUsers = async () => {
+    return knex('users')
+      .select('username');
+  };
+
   const getUserPublicKey = async (username) => {
     const user = await getUser(username);
     if (!user) {
@@ -55,6 +60,7 @@ module.exports = () => {
     getUser,
     getUserPublicKey,
     createUser,
-    countUsers
+    countUsers,
+    listUsers
   };
 };
