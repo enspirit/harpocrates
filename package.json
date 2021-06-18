@@ -58,7 +58,9 @@
     "prepack": "oclif-dev manifest && oclif-dev readme",
     "test": "nyc mocha --forbid-only \"test/**/*.test.js\"",
     "version": "oclif-dev readme && git add README.md",
-    "package": "pkg . --targets linux,macos,win,alpine --out-path pkg/"
+    "package": "pkg . --targets linux,macos,win,alpine --out-path pkg/",
+    "prestart": "knex migrate:latest",
+    "start": "node ./bin/run hub"
   },
   "pkg": {
     "scripts": [
