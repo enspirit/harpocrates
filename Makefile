@@ -10,6 +10,7 @@ SHELL=/bin/bash -o pipefail
 # Specify which docker tag is to be used
 VERSION := $(or ${VERSION},${VERSION},latest)
 DOCKER_REGISTRY := $(or ${DOCKER_REGISTRY},${DOCKER_REGISTRY},docker.io)
+DOCKER_BUILDKIT := 1
 
 TINY = ${VERSION}
 MINOR = $(shell echo '${TINY}' | cut -f'1-2' -d'.')

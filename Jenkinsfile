@@ -1,6 +1,8 @@
 pipeline {
 
-  agent any
+  agent {
+    label 'buildkit'
+  }
 
   triggers {
     issueCommentTrigger('.*build this please.*')
