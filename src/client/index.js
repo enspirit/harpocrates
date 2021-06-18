@@ -65,6 +65,18 @@ class Client {
     console.log('Disconnecting from hub...');
     this.#socket.close();
   }
+
+  getInvitation() {
+    console.log('Getting an invite token from the hub...');
+    return new Promise((resolve, reject) => {
+      this.#socket.emit('getInvite', {}, ({ err, invite }) => {
+        if (err) {
+          return reject(new Error(err));
+        }
+        resolve(invite);
+      });
+    });
+  }
 }
 
 module.exports = (config) => {

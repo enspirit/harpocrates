@@ -5,6 +5,7 @@ const { Server } = require('socket.io');
 const { HANDSHAKE } = require('../core/constants');
 const keys = require('../core/keys');
 const dbConnect = require('./db');
+const invites = require('./invites');
 
 module.exports = (port = 3000) => {
   const server = http.createServer(app);
@@ -51,7 +52,7 @@ module.exports = (port = 3000) => {
 
     socket.on('ring', async (msg, reply) => {
       if (!socket.authenticated) {
-        socket.emit('unauthorized');
+        reply({ err: 'unauthorized' });
         return socket.disconnect();
       }
       console.log(socket.username, 'wants to contact', msg.recipient);
@@ -64,7 +65,7 @@ module.exports = (port = 3000) => {
 
     socket.on('privateMessage', async (msg, reply) => {
       if (!socket.authenticated) {
-        socket.emit('unauthorized');
+        reply({ err: 'unauthorized' });
         return socket.disconnect();
       }
       console.log(socket.username, 'wants to send data to', msg.recipient);
@@ -83,6 +84,15 @@ module.exports = (port = 3000) => {
         message: msg.message
       });
       reply('ok');
+    });
+
+    socket.on('getInvite', async (msg, reply) => {
+      if (!socket.authenticated) {
+        reply({ err: 'unauthorized' });
+        return socket.disconnect();
+      }
+      const invite = await invites.createInvite();
+      reply({ invite });
     });
   });
 

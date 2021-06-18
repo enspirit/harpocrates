@@ -7,8 +7,12 @@ class InviteCommand extends Command {
     const config = loadConfig();
     const client = await createClient(config);
     await client.authenticate();
-    const token = await client.getInvitationToken();
-    console.log(token);
+    const invitation = await client.getInvitation();
+    const expiresIn = (invitation.expire - Date.now()) / 1000;
+    this.log(`The hub generated the following token: \n\n${invitation.token}\n`);
+    this.log('Please provide this token to another user so that they can join');
+    this.warn(`! the invitation will expire in ${expiresIn} seconds !`);
+    client.disconnect();
   }
 }
 
