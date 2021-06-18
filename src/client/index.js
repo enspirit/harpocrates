@@ -7,14 +7,32 @@ const debug = require('debug');
 class Client {
   #config;
   #socket;
+  #authenticated;
+  #waitingForMessages;
 
   constructor(config, socket) {
     this.#config = config;
     this.#socket = socket;
+    this.#authenticated = false;
+
+    this.#socket.on('disconnect', () => {
+
+    });
+
+    this.#socket.on('connect', async () => {
+      // We were authenticated, let's reauthenticate
+      if (this.#authenticated) {
+        await this.authenticate();
+      }
+      if (this.#waitingForMessages) {
+        await this.waitForMessages();
+      }
+    });
   }
 
-  waitForMessages(fn = () => {}) {
-    this.#socket.emit('listen');
+  async waitForMessages(fn = () => {}) {
+    await this.#socket.emit('listen');
+    this.#waitingForMessages = true;
     this.#socket.on('message', (data) => {
       debug('receiving private message from', data.from);
       const message = keys.decrypt(data.message, this.#config.privateKey);
@@ -30,6 +48,7 @@ class Client {
         handshake: keys.sign(HANDSHAKE, this.#config.privateKey)
       }, (data) => {
         if (data === 'ok') {
+          this.#authenticated = true;
           return resolve();
         }
         reject(new Error('Authentication failed'));
