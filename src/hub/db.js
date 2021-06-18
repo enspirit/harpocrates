@@ -23,8 +23,13 @@ module.exports = () => {
     return keys.factorPublic(user.publicKey);
   };
 
+  const countUsers = async () => {
+    const rs = await knex('users')
+      .count('* as count');
+    return rs[0].count;
+  };
+
   const createUser = async ({ username, publicKey }) => {
-    console.log('creating with', username, publicKey);
     if (!username) {
       throw new Error('Invalid username');
     }
@@ -49,6 +54,7 @@ module.exports = () => {
   return {
     getUser,
     getUserPublicKey,
-    createUser
+    createUser,
+    countUsers
   };
 };

@@ -16,18 +16,18 @@ const createToken = () => {
 };
 
 module.exports = {
-  async createInvite() {
+  async createInvite(lifetime = TOKEN_LIFETIME) {
     const token = await createToken();
     const invite = {
       token,
-      expire: Date.now() + TOKEN_LIFETIME
+      expire: Date.now() + lifetime
     };
     pendingInvites.push(invite);
     console.log('New invite token generated');
     setTimeout(() => {
       console.log('Expiring invite...');
       this.removeInvite(invite);
-    }, TOKEN_LIFETIME);
+    }, lifetime);
     return invite;
   },
 

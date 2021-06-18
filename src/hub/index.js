@@ -7,10 +7,18 @@ const keys = require('../core/keys');
 const dbConnect = require('./db');
 const invites = require('./invites');
 
-module.exports = (port = 3000) => {
+module.exports = async (port = 3000) => {
   const server = http.createServer(app);
   const io = new Server(server);
   const db = dbConnect();
+
+  // If we don't have users, let's generate a first invitation for the first user to join
+  const count = await db.countUsers();
+  if (!count) {
+    const invite = await invites.createInvite();
+    console.log('No users found in database, please use the following invitation to join your first user');
+    console.log(invite);
+  }
 
   app.get('/', (req, res) => {
     res.send({
