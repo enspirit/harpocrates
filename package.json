@@ -1,6 +1,6 @@
 {
   "name": "@enspirit/harpocrates",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "author": "Louis Lambeau @llambeau",
   "bin": {
     "harpocrates": "./bin/run"
