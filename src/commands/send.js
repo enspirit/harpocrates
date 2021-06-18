@@ -7,8 +7,13 @@ class SendCommand extends Command {
   async run() {
     const { flags, args } = this.parse(SendCommand);
     const config = loadConfig();
+
+    cli.action.start('Connecting to the hub');
     const client = await createClient(config);
+    cli.action.stop();
+    cli.action.start('Authenticating');
     await client.authenticate();
+    cli.action.stop();
 
     const data = await cli.prompt('Please introduce the content you want to share');
     await client.sendTo(args.to, data);

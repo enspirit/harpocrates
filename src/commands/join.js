@@ -6,9 +6,17 @@ const cli = require('cli-ux').default;
 class JoinCommand extends Command {
   async run() {
     const config = loadConfig();
+
+    cli.action.start('Connecting to the hub');
     const client = await createClient(config);
+    cli.action.stop();
+
     const token = await cli.prompt('Please introduce the invitation token you have received');
+    cli.action.start('Joining the hub');
     await client.joinHub({ username: config.username, token });
+    cli.action.stop();
+
+    this.log('Joined successfully');
     client.disconnect();
   }
 }

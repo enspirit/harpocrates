@@ -2,6 +2,7 @@ const io = require('socket.io-client');
 const { UnreachableError } = require('../core/robust');
 const { HANDSHAKE } = require('../core/constants');
 const keys = require('../core/keys');
+const debug = require('debug');
 
 class Client {
   #config;
@@ -12,12 +13,13 @@ class Client {
     this.#socket = socket;
   }
 
-  waitForMessages() {
+  waitForMessages(fn = () => {}) {
     this.#socket.emit('listen');
     this.#socket.on('message', (data) => {
-      console.log('receiving private message from', data.from);
+      debug('receiving private message from', data.from);
       const message = keys.decrypt(data.message, this.#config.privateKey);
-      console.log('->', message);
+      debug('->', message);
+      fn(message, data.from);
     });
   }
 
@@ -36,7 +38,7 @@ class Client {
   }
 
   sendTo(recipient, content) {
-    console.log('Ringing', recipient);
+    debug('Ringing', recipient);
     return new Promise((resolve, reject) => {
       this.#socket.emit('ring', {
         recipient
@@ -44,10 +46,10 @@ class Client {
         if (err) {
           return reject(new Error(err));
         }
-        console.log('Got recipient public key, encrypting message');
+        debug('Got recipient public key, encrypting message');
         const key = keys.factorPublic(publicKey);
         const encrypted = keys.encrypt(content, key);
-        console.log('Sending encrypted message to recipient...');
+        debug('Sending encrypted message to recipient...');
         this.#socket.emit('privateMessage', {
           recipient,
           message: encrypted
@@ -62,12 +64,12 @@ class Client {
   }
 
   disconnect() {
-    console.log('Disconnecting from hub...');
+    debug('Disconnecting from hub...');
     this.#socket.close();
   }
 
   getInvitation() {
-    console.log('Getting an invite token from the hub...');
+    debug('Getting an invite token from the hub...');
     return new Promise((resolve, reject) => {
       this.#socket.emit('getInvite', {}, ({ err, invite }) => {
         if (err) {
@@ -79,7 +81,7 @@ class Client {
   }
 
   joinHub({ username, token }) {
-    console.log('Trying to join hub with invitation...');
+    debug('Trying to join hub with invitation...');
     return new Promise((resolve, reject) => {
       this.#socket.emit('joinHub', {
         username,
@@ -111,11 +113,11 @@ module.exports = (config) => {
   let attempts = 3;
 
   return new Promise((resolve, reject) => {
-    console.log('Trying to connect to the Harpocrates hub...');
+    debug('Trying to connect to the Harpocrates hub...');
     const socket = io(config.hub, { reconnectionDelayMax: 3000, reconnectionAttempts: maxRetries });
 
     socket.on('connect', () => {
-      console.log('Connected to Harpocrates hub...');
+      debug('Connected to Harpocrates hub...');
       resolve(new Client(config, socket));
     });
 
