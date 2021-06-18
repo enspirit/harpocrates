@@ -8,4 +8,4 @@ RUN npm install
 
 COPY . .
 
-CMD ["node", "./bin/run", "server"]
+CMD ["node", "./bin/run", "hub"]
