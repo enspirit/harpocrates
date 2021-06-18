@@ -19,7 +19,7 @@ class SetupCommand extends Command {
 
 SetupCommand.description = `Sets up harprocrates
 ...
-This command initializes harpocrates, creating a new rsa pair for encryption of passwords
+This command initializes harpocrates, creating a new rsa pair for authentication and encryption of messages
 `;
 
 SetupCommand.flags = {
