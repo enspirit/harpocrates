@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 
-const TOKEN_LIFETIME = 10 * 1000; // 2 minutes
+const TOKEN_LIFETIME = 2 * 60 * 1000; // 2 minutes
 
 const pendingInvites = [];
 
