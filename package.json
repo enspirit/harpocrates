@@ -15,6 +15,7 @@
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
+    "@oclif/plugin-autocomplete": "^0.3.0",
     "@oclif/plugin-help": "^3.2.2",
     "cli-ux": "^5.5.1",
     "express": "^4.17.1",
@@ -48,7 +49,8 @@
     "commands": "./src/commands",
     "bin": "harpocrates",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-autocomplete"
     ]
   },
   "repository": "enspirit/harpocrates",
