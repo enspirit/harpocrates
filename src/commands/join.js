@@ -13,7 +13,7 @@ class JoinCommand extends Command {
   }
 }
 
-JoinCommand.description = `Sets up harprocrates
+JoinCommand.description = `Join a harpocrates hub for the first time
 ...
 This command allows you to join the harpocrates hub for the first time as a non authenticated member.
 In order to join a hub you need an invitation token.
