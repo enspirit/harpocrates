@@ -5,7 +5,7 @@ module.exports = () => {
   const knex = require('knex')({
     client: 'sqlite3',
     connection: {
-      filename: path.join(process.cwd(), 'users.sqlite')
+      filename: process.env.DB_PATH || path.join(process.cwd(), 'harpocrates.sqlite')
     }
   });
 

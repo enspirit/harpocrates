@@ -6,5 +6,5 @@ Dockerfile.*
 /tmp
 /yarn.lock
 node_modules
-users.sqlite
+harpocrates.sqlite
 pkg/

@@ -3,6 +3,6 @@
 module.exports = {
   client: 'sqlite3',
   connection: {
-    filename: './users.sqlite'
+    filename: process.env.DB_PATH || './harpocrates.sqlite'
   }
 };
