@@ -19,7 +19,7 @@ $ npm install -g @enspirit/harpocrates
 $ harpocrates COMMAND
 running command...
 $ harpocrates (-v|--version|version)
-@enspirit/harpocrates/0.0.4 linux-x64 node-v12.18.0
+@enspirit/harpocrates/0.0.5 darwin-x64 node-v12.18.4
 $ harpocrates --help [COMMAND]
 USAGE
   $ harpocrates COMMAND
@@ -29,9 +29,9 @@ USAGE
 # Commands
 <!-- commands -->
 * [`harpocrates help [COMMAND]`](#harpocrates-help-command)
+* [`harpocrates hub`](#harpocrates-hub)
 * [`harpocrates receive`](#harpocrates-receive)
 * [`harpocrates send TO`](#harpocrates-send-to)
-* [`harpocrates server`](#harpocrates-server)
 * [`harpocrates setup`](#harpocrates-setup)
 
 ## `harpocrates help [COMMAND]`
@@ -51,6 +51,24 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.2/src/commands/help.ts)_
 
+## `harpocrates hub`
+
+Starts a harprocrates hub
+
+```
+USAGE
+  $ harpocrates hub
+
+OPTIONS
+  -p, --port=port  [default: 3000] port to use for the server
+
+DESCRIPTION
+  ...
+  This command starts a hub used by users to communicate with each other
+```
+
+_See code: [src/commands/hub.js](https://github.com/enspirit/harpocrates/blob/v0.0.5/src/commands/hub.js)_
+
 ## `harpocrates receive`
 
 Connect to the hub and wait for messages...
@@ -63,7 +81,7 @@ DESCRIPTION
   This command connects to the harpocrates hub and waits for incoming messages from users
 ```
 
-_See code: [src/commands/receive.js](https://github.com/enspirit/harpocrates/blob/v0.0.4/src/commands/receive.js)_
+_See code: [src/commands/receive.js](https://github.com/enspirit/harpocrates/blob/v0.0.5/src/commands/receive.js)_
 
 ## `harpocrates send TO`
 
@@ -82,25 +100,7 @@ DESCRIPTION
   that needs to be shared
 ```
 
-_See code: [src/commands/send.js](https://github.com/enspirit/harpocrates/blob/v0.0.4/src/commands/send.js)_
-
-## `harpocrates server`
-
-Starts a harprocrates server
-
-```
-USAGE
-  $ harpocrates server
-
-OPTIONS
-  -p, --port=port  [default: 3000] port to use for the server
-
-DESCRIPTION
-  ...
-  This command starts a harpocrates server used as a hub for users to communicate with each other
-```
-
-_See code: [src/commands/server.js](https://github.com/enspirit/harpocrates/blob/v0.0.4/src/commands/server.js)_
+_See code: [src/commands/send.js](https://github.com/enspirit/harpocrates/blob/v0.0.5/src/commands/send.js)_
 
 ## `harpocrates setup`
 
@@ -120,5 +120,5 @@ DESCRIPTION
   This command initializes harpocrates, creating a new rsa pair for encryption of passwords
 ```
 
-_See code: [src/commands/setup.js](https://github.com/enspirit/harpocrates/blob/v0.0.4/src/commands/setup.js)_
+_See code: [src/commands/setup.js](https://github.com/enspirit/harpocrates/blob/v0.0.5/src/commands/setup.js)_
 <!-- commandsstop -->
