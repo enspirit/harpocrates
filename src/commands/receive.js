@@ -13,8 +13,8 @@ class ReceiveCommand extends Command {
     await client.authenticate();
     cli.action.stop();
     cli.action.start('Waiting for messages');
-    client.waitForMessages((msg, from) => {
-      this.log(`FROM: ${from}\n${msg}`);
+    client.on('message', ({ message, from }) => {
+      this.log(`FROM: ${from}\n${message}`);
     });
   }
 }

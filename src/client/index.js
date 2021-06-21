@@ -1,43 +1,32 @@
 const io = require('socket.io-client');
 const { UnreachableError } = require('../core/robust');
+const EventEmitter = require('events').EventEmitter;
 const { HANDSHAKE } = require('../core/constants');
 const keys = require('../core/keys');
 const debug = require('debug');
 
-class Client {
+class Client extends EventEmitter {
   #config;
   #socket;
   #authenticated;
-  #waitingForMessages;
 
   constructor(config, socket) {
+    super();
     this.#config = config;
     this.#socket = socket;
     this.#authenticated = false;
 
-    this.#socket.on('disconnect', () => {
-
-    });
-
-    this.#socket.on('connect', async () => {
-      // We were authenticated, let's reauthenticate
-      if (this.#authenticated) {
-        await this.authenticate();
-      }
-      if (this.#waitingForMessages) {
-        await this.waitForMessages();
-      }
-    });
-  }
-
-  async waitForMessages(fn = () => {}) {
-    await this.#socket.emit('listen');
-    this.#waitingForMessages = true;
     this.#socket.on('message', (data) => {
       debug('receiving private message from', data.from);
       const message = keys.decrypt(data.message, this.#config.privateKey);
-      debug('->', message);
-      fn(message, data.from);
+      this.emit('message', { message, from: data.from });
+    });
+
+    this.#socket.on('connect', async () => {
+      // We were authenticated in a previous connection, let's reauthenticate
+      if (this.#authenticated) {
+        await this.authenticate();
+      }
     });
   }
 
@@ -49,14 +38,17 @@ class Client {
       }, (data) => {
         if (data === 'ok') {
           this.#authenticated = true;
+          this.emit('authenticated');
           return resolve();
         }
-        reject(new Error('Authentication failed'));
+        const err = new Error('Authentication failed');
+        this.emit('error', err);
+        reject(err);
       });
     });
   }
 
-  sendTo(recipient, content) {
+  sendTo(recipient, message) {
     debug('Ringing', recipient);
     return new Promise((resolve, reject) => {
       this.#socket.emit('ring', {
@@ -67,15 +59,18 @@ class Client {
         }
         debug('Got recipient public key, encrypting message');
         const key = keys.factorPublic(publicKey);
-        const encrypted = keys.encrypt(content, key);
+        const encrypted = keys.encrypt(message, key);
         debug('Sending encrypted message to recipient...');
         this.#socket.emit('privateMessage', {
           recipient,
           message: encrypted
         }, (res) => {
           if (res.err) {
-            return reject(new Error(res.err));
+            const err = new Error(res.err);
+            this.emit('error', err);
+            return reject(err);
           }
+          this.emit('messageSent', { recipient, message });
           resolve();
         });
       });

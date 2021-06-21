@@ -46,16 +46,9 @@ module.exports = async (port = 3000) => {
       }
       socket.username = msg.username;
       socket.authenticated = true;
-      reply('ok');
-    });
-
-    socket.on('listen', () => {
-      if (!socket.authenticated) {
-        socket.emit('unauthorized');
-        return socket.disconnect();
-      }
       console.log(socket.username, 'joining their own room');
       socket.join(socket.username);
+      reply('ok');
     });
 
     socket.on('ring', async (msg, reply) => {
@@ -144,7 +137,6 @@ module.exports = async (port = 3000) => {
 
       // Back to array
       reply({ users: Object.values(list) });
-
     });
   });
 
