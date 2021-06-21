@@ -20,6 +20,39 @@ module.exports = async (port = 3000) => {
     console.log(invite);
   }
 
+  const getUserList = async () => {
+    const users = await db.listUsers();
+
+    // List of our users
+    const list = users.reduce((list, user) => {
+      list[user.username] = { username: user.username };
+      return list;
+    }, {});
+
+    // Decorate list with connected/listening statuses
+    io.sockets.sockets.forEach((socket) => {
+      if (!socket.username || !list[socket.username]) {
+        return;
+      }
+      list[socket.username].connected = true;
+      if (io.sockets.adapter.rooms.has(socket.username)) {
+        list[socket.username].receiving = true;
+      }
+    });
+
+    return Object.values(list);
+  };
+
+  const broadcastUserList = async () => {
+    const list = await getUserList();
+    io.sockets.sockets.forEach(socket => {
+      if (!socket.authenticated) {
+        return;
+      }
+      socket.emit('userList', { users: list });
+    });
+  };
+
   app.get('/', (req, res) => {
     res.send({
       name: 'harprocrates',
@@ -29,6 +62,10 @@ module.exports = async (port = 3000) => {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
+
+    socket.on('disconnect', () => {
+      broadcastUserList();
+    });
 
     socket.on('auth', async (msg, reply) => {
       const { username, handshake } = msg;
@@ -49,6 +86,8 @@ module.exports = async (port = 3000) => {
       console.log(socket.username, 'joining their own room');
       socket.join(socket.username);
       reply('ok');
+
+      broadcastUserList();
     });
 
     socket.on('ring', async (msg, reply) => {
@@ -113,30 +152,14 @@ module.exports = async (port = 3000) => {
         return socket.disconnect();
       }
       reply('ok');
+
+      broadcastUserList();
     });
 
     socket.on('listUsers', async (_, reply) => {
-      const users = await db.listUsers();
-
-      // List of our users
-      const list = users.reduce((list, user) => {
-        list[user.username] = { username: user.username };
-        return list;
-      }, {});
-
-      // Decorate list with connected/listening statuses
-      io.sockets.sockets.forEach((socket) => {
-        if (!socket.username || !list[socket.username]) {
-          return;
-        }
-        list[socket.username].connected = true;
-        if (io.sockets.adapter.rooms.has(socket.username)) {
-          list[socket.username].receiving = true;
-        }
-      });
-
+      const list = await getUserList();
       // Back to array
-      reply({ users: Object.values(list) });
+      reply({ users: list });
     });
   });
 

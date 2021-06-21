@@ -22,6 +22,11 @@ class Client extends EventEmitter {
       this.emit('message', { message, from: data.from });
     });
 
+    this.#socket.on('userList', ({ users }) => {
+      debug('receiving new user list', users);
+      this.emit('userList', users);
+    });
+
     this.#socket.on('connect', async () => {
       // We were authenticated in a previous connection, let's reauthenticate
       if (this.#authenticated) {
