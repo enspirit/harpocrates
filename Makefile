@@ -30,3 +30,14 @@ push-image:
 	docker tag enspirit/harpocrates $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 	docker push $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 
+################################################################################
+# Dependencies and packages
+#
+node_modules:
+	docker run --rm -t -v $(PWD):/app enspirit/harpocrates npm install
+
+pkg: node_modules
+	docker run --rm -t -v $(PWD):/app enspirit/harpocrates npm run package
+
+release: pkg
+	docker run --rm -t -v $(PWD):/app -w /app --env GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) quadrabee/k8s-builder:3.1 sh  ./bin/release
