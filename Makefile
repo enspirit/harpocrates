@@ -30,3 +30,14 @@ push-image:
 	docker tag enspirit/harpocrates $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 	docker push $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 
+################################################################################
+# Dependencies and packages
+#
+node_modules:
+	npm install
+
+package: node_modules
+	npm run package
+
+release: package
+	bin/release

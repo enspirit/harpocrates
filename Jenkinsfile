@@ -50,6 +50,14 @@ pipeline {
         }
       }
     }
+
+    stage ('Realease Packages') {
+      steps {
+        script {
+          sh 'make release'
+        }
+      }
+    }
   }
 
   post {

@@ -107,7 +107,7 @@ USAGE
 
 DESCRIPTION
   ...
-  This command connects to a harpocrates hub and generates an invitation token that you can give to another user for 
+  This command connects to a harpocrates hub and generates an invitation token that you can give to another user for
   them to use with 'harpocrates join'.
 ```
 
@@ -182,7 +182,7 @@ ARGUMENTS
 
 DESCRIPTION
   ...
-  This command connects to the harpocrates hub, waits for the user to connect and then prompts the user for the password 
+  This command connects to the harpocrates hub, waits for the user to connect and then prompts the user for the password
   that needs to be shared
 ```
 
