@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Publish on github
+echo "Publishing on Github..."
+if [ !  $GITHUB_ACCESS_TOKEN ]; then
+  echo "GITHUB_ACCESS_TOKEN not found, aborting!"
+  exit 1
+fi
+token=$GITHUB_ACCESS_TOKEN
+
+# Get the last tag name
+tag=$(git describe --tags)
+
+# Get the full message associated with this tag
+message="$(git for-each-ref refs/tags/$tag --format='%(contents)')"
+
+# Get the title and the description as separated variables
+name=$(echo "$message" | head -n1)
+description=$(echo "$message" | tail -n +3)
+description=$(echo "$description" | sed 's/\n/\\n/g') # Escape line breaks to prevent json parsing problems
+
+# Create a release
+release=$(curl -XPOST -H "Authorization:token $token" --data "{\"tag_name\": \"$tag\", \"target_commitish\": \"master\", \"name\": \"$name\", \"body\": \"$description\", \"draft\": false, \"prerelease\": true}" https://api.github.com/repos/llambeau/harpocrates/releases)
+
+# Extract the id of the release from the creation response
+id=$(echo "$release" | sed -n -e 's/"id":\ \([0-9]\+\),/\1/p' | head -n 1 | sed 's/[[:blank:]]//g')
+
+# Upload the artifact
+curl -XPOST -H "Authorization: token $token" -H "Content-Type:application/octet-stream" --data-binary @"pkg/harpocrates-alpine" https://uploads.github.com/repos/llambeau/harpocrates/releases/$id/assets?name=harpocrates-alpine
+curl -XPOST -H "Authorization: token $token" -H "Content-Type:application/octet-stream" --data-binary @"pkg/harpocrates-linux" https://uploads.github.com/repos/llambeau/harpocrates/releases/$id/assets?name=harpocrates-linux
+curl -XPOST -H "Authorization: token $token" -H "Content-Type:application/octet-stream" --data-binary @"pkg/harpocrates-macos" https://uploads.github.com/repos/llambeau/harpocrates/releases/$id/assets?name=harpocrates-macos
+curl -XPOST -H "Authorization: token $token" -H "Content-Type:application/octet-stream" --data-binary @"pkg/harpocrates-win.exe" https://uploads.github.com/repos/llambeau/harpocrates/releases/$id/assets?name=harpocrates-win
