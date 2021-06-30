@@ -1,8 +1,6 @@
 pipeline {
 
-  agent {
-    label 'buildkit'
-  }
+  agent any
 
   triggers {
     issueCommentTrigger('.*build this please.*')
@@ -45,6 +43,21 @@ pipeline {
           script {
             docker.withRegistry('', 'dockerhub-credentials') {
               sh 'make push-image'
+            }
+          }
+        }
+      }
+    }
+
+    stage ('Realease Packages') {
+      when {
+        buildingTag()
+      }
+      steps {
+        container('builder') {
+          script {
+            withCredentials([string(credentialsId: 'github-llambeau-token', variable: 'GITHUB_ACCESS_TOKEN')]) {
+              sh 'make release'
             }
           }
         }

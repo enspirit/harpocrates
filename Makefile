@@ -30,3 +30,14 @@ push-image:
 	docker tag enspirit/harpocrates $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 	docker push $(DOCKER_REGISTRY)/enspirit/harpocrates:$(MINOR)
 
+################################################################################
+# Dependencies and packages
+#
+pkg:
+	mkdir -p pkg
+
+packages: pkg image
+	docker run --rm -t -v $(PWD)/pkg:/app/pkg enspirit/harpocrates npm run package
+
+release: packages
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) sh ./bin/release
