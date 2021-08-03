@@ -40,4 +40,4 @@ pkg: node_modules
 	docker run --rm -t -v $(PWD):/app enspirit/harpocrates npm run package
 
 release: pkg
-	docker run --rm -t -v $(PWD):/app -w /app --env GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) quadrabee/k8s-builder:3.1 sh  ./bin/release
+	GITHUB_ACCESS_TOKEN=$(GITHUB_ACCESS_TOKEN) sh ./bin/release
