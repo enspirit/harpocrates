@@ -16,7 +16,7 @@
     "@oclif/command": "^1.8.0",
     "@oclif/config": "^1.17.0",
     "@oclif/plugin-autocomplete": "^0.3.0",
-    "@oclif/plugin-help": "^3.2.2",
+    "@oclif/plugin-help": "^3.2.5",
     "@oclif/plugin-warn-if-update-available": "^1.7.0",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.9.0",
