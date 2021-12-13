@@ -22,7 +22,7 @@
     "blessed-contrib": "^4.9.0",
     "cli-ux": "^5.5.1",
     "express": "^4.17.1",
-    "knex": "^0.95.6",
+    "knex": "^0.95.14",
     "ora": "^5.4.1",
     "socket.io": "^4.1.2",
     "socket.io-client": "^4.1.2",
